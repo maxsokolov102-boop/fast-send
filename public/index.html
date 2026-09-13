@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>FastSend — мгновенный обмен</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="brand" title="FastSend">
+      <svg viewBox="0 0 24 24" class="logo-icon" fill="currentColor" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+    </div>
+    <div class="titlebar-right">
+      <button class="chrome-btn" id="menuBtn" title="Настройки">
+        <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="app">
+    <!-- ЛЕВАЯ ПАНЕЛЬ: своё устройство -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Это устройство</div>
+      <p class="sidebar-sub">Ваш код доступен другому устройству для подключения</p>
+
+      <div class="field">
+        <div class="field-label">ID</div>
+        <div class="field-row">
+          <div class="field-value big copyable" id="hostCode" title="Нажмите, чтобы скопировать">— — —</div>
+          <button class="icon-btn" id="copyCode" title="Скопировать ID">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><rect x="3" y="3" width="13" height="13"/><path d="M8 20h12V8h-4"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Одноразовый пароль</div>
+        <div class="field-row" id="passRow">
+          <div class="field-value copyable" id="hostPass" title="Нажмите, чтобы скопировать">——————</div>
+          <input class="field-input" id="passEditInput" type="text" maxlength="32" autocomplete="off" hidden>
+          <button class="icon-btn" id="rotateNow" title="Сгенерировать новый пароль">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M20 11A8 8 0 1 0 18.5 16"/><path d="M20 5v6h-6"/></svg>
+          </button>
+          <button class="icon-btn" id="editPassBtn" title="Задать свой пароль">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M3 21l4-1 12-12-3-3L4 17z"/><path d="M14 6l3 3"/></svg>
+          </button>
+          <button class="icon-btn" id="savePassBtn" title="Сохранить" hidden>
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M4 12l5 5L20 6"/></svg>
+          </button>
+          <button class="icon-btn" id="cancelPassBtn" title="Отмена" hidden>
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg>
+          </button>
+        </div>
+        <p class="error small" id="passError"></p>
+      </div>
+
+      <div class="timer-row">
+        <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+        <span id="timerLabel">15:00</span>
+      </div>
+
+      <label class="switch-row">
+        <input type="checkbox" id="requireAuth" checked>
+        <span>Запрашивать пароль</span>
+      </label>
+
+      <div class="sidebar-foot">Код и пароль обновляются автоматически каждые 15 минут</div>
+    </aside>
+
+    <!-- ОСНОВНАЯ ОБЛАСТЬ -->
+    <main class="main">
+      <!-- Форма подключения (пока нет пары) -->
+      <section id="connectArea">
+        <section class="connect-box" id="connectBox">
+          <div class="connect-title">Новое подключение</div>
+          <p class="hint">Введите код и пароль с другого устройства</p>
+          <div class="connect-row">
+            <input class="input" id="joinCode" inputmode="numeric" maxlength="7" placeholder="000 000">
+            <input class="input" id="joinPass" maxlength="32" placeholder="Пароль">
+            <button class="primary-btn" id="joinBtn" title="Подключиться">
+              <svg viewBox="0 0 24 24" class="i" fill="currentColor" aria-hidden="true"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg>
+              <span>Подключиться</span>
+            </button>
+          </div>
+          <p class="error" id="joinError"></p>
+        </section>
+
+        <section class="panel">
+          <div class="tabbar">
+            <div class="tabbar-left" role="tablist">
+              <button class="tab-icon active" data-tab="recent" title="Недавние подключения">
+                <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l4 2"/></svg>
+              </button>
+              <button class="tab-icon" data-tab="favorites" title="Избранное">
+                <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M12 3l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 17l-5.6 3.1 1.4-6.3-4.8-4.3 6.4-.6z"/></svg>
+              </button>
+              <button class="tab-icon" data-tab="settings" title="Настройки интерфейса">
+                <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.1l2-1.6-2-3.4-2.4 1a7 7 0 0 0-1.9-1.1L14 3h-4l-.6 2.8a7 7 0 0 0-1.9 1.1l-2.4-1-2 3.4 2 1.6A7 7 0 0 0 5 12a7 7 0 0 0 .1 1.1l-2 1.6 2 3.4 2.4-1a7 7 0 0 0 1.9 1.1L10 21h4l.6-2.8a7 7 0 0 0 1.9-1.1l2.4 1 2-3.4-2-1.6A7 7 0 0 0 19 12z"/></svg>
+              </button>
+            </div>
+            <div class="tabbar-right">
+              <button class="tab-icon" id="searchToggle" title="Поиск">
+                <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="M20 20l-5.5-5.5"/></svg>
+              </button>
+              <button class="tab-icon" id="viewToggle" title="Вид: сетка">
+                <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="search-row" id="searchRow" hidden>
+            <input class="input" id="searchInput" placeholder="Поиск по коду или метке">
+          </div>
+
+          <div class="list" id="listArea"></div>
+
+          <div class="settings-area" id="settingsArea" hidden>
+            <div class="settings-group">
+              <div class="settings-label">Акцентный цвет</div>
+              <div class="swatches" id="accentSwatches"></div>
+            </div>
+            <div class="settings-group">
+              <div class="settings-label">Плотность интерфейса</div>
+              <div class="segmented" id="densitySeg">
+                <button class="seg-btn active" data-density="comfortable" title="Комфортно">
+                  <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><line x1="4" y1="6" x2="20" y2="6"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="18" x2="20" y2="18"/></svg>
+                </button>
+                <button class="seg-btn" data-density="compact" title="Компактно">
+                  <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><line x1="4" y1="4" x2="20" y2="4"/><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="14" x2="20" y2="14"/><line x1="4" y1="19" x2="20" y2="19"/></svg>
+                </button>
+              </div>
+            </div>
+            <label class="switch-row">
+              <input type="checkbox" id="rememberRecent" checked>
+              <span>Запоминать недавние подключения</span>
+            </label>
+            <button class="ghost-btn" id="clearHistoryBtn" title="Очистить историю и избранное">
+              <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M4 7h16"/><path d="M9 7V4h6v3"/><path d="M6 7l1 13h10l1-13"/></svg>
+              <span>Очистить историю и избранное</span>
+            </button>
+          </div>
+        </section>
+      </section>
+
+      <!-- Чат / обмен файлами -->
+      <section class="chat" id="exchange" hidden>
+        <div class="chat-head">
+          <span class="chat-peer">● Устройство подключено</span>
+          <button class="icon-btn" id="disconnectBtn" title="Разорвать соединение">
+            <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M9 15l6-6"/><path d="M13 4l1-1a3.5 3.5 0 0 1 5 5l-1 1"/><path d="M11 20l-1 1a3.5 3.5 0 0 1-5-5l1-1"/><path d="M3 3l18 18"/></svg>
+          </button>
+        </div>
+
+        <div class="log" id="log"></div>
+
+        <div class="composer">
+          <div class="drop" id="dropZone">
+            <label class="file-label" id="fileLabel" title="Прикрепить файл (до 5 МБ)">
+              <svg viewBox="0 0 24 24" class="i" aria-hidden="true"><path d="M21 11l-9.5 9.5a4 4 0 0 1-5.7-5.7l10-10a2.7 2.7 0 0 1 3.8 3.8l-9.9 9.9a1.3 1.3 0 0 1-1.9-1.9l8.6-8.6"/></svg>
+              <input type="file" id="fileInput" hidden>
+            </label>
+          </div>
+          <div class="send-row">
+            <textarea id="textInput" placeholder="Введите текст и нажмите Enter…" rows="1"></textarea>
+            <button class="primary-btn small" id="sendBtn" title="Отправить">
+              <svg viewBox="0 0 24 24" class="i" fill="currentColor" aria-hidden="true"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <span class="foot-status"><span class="dot" id="footDot"></span><span id="footStatusText">Готово к подключению</span></span>
+    <span class="foot-note">Данные передаются напрямую через сервер-ретранслятор и нигде не сохраняются</span>
+  </footer>
+
+<script src="app.js"></script>
+</body>
+</html>
