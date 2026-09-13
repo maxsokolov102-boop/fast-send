@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>FastSend — мгновенный обмен</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="titlebar">
+    <div class="brand">
+      <span class="logo">⚡</span>
+      <span>FastSend</span>
+    </div>
+    <div class="status" id="statusPill">не подключено</div>
+  </div>
+
+  <div class="app">
+    <!-- ЛЕВАЯ ПАНЕЛЬ: своё устройство -->
+    <aside class="sidebar">
+      <div class="sidebar-title">Это устройство</div>
+      <p class="sidebar-sub">Ваш код доступен другому устройству для подключения</p>
+
+      <div class="field">
+        <div class="field-label">ID</div>
+        <div class="field-row">
+          <div class="field-value big" id="hostCode">— — —</div>
+          <button class="icon-btn" id="copyCode" title="Скопировать ID">⧉</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <div class="field-label">Одноразовый пароль</div>
+        <div class="field-row">
+          <div class="field-value" id="hostPass">——————</div>
+          <button class="icon-btn" id="rotateNow" title="Сгенерировать новый">↻</button>
+          <button class="icon-btn" id="copyPass" title="Скопировать пароль">⧉</button>
+        </div>
+      </div>
+
+      <div class="timer-row">
+        <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+        <span id="timerLabel">15:00</span>
+      </div>
+
+      <label class="switch-row">
+        <input type="checkbox" id="requireAuth" checked>
+        <span>Запрашивать пароль</span>
+      </label>
+
+      <div class="sidebar-foot">Код и пароль обновляются автоматически каждые 15 минут</div>
+    </aside>
+
+    <!-- ОСНОВНАЯ ОБЛАСТЬ -->
+    <main class="main">
+      <!-- Форма подключения (пока нет пары) -->
+      <section class="connect-box" id="connectBox">
+        <div class="connect-title">Новое подключение</div>
+        <p class="hint">Введите код и пароль с другого устройства</p>
+        <div class="connect-row">
+          <input class="input" id="joinCode" inputmode="numeric" maxlength="7" placeholder="000 000">
+          <input class="input" id="joinPass" maxlength="6" placeholder="Пароль">
+          <button class="primary-btn" id="joinBtn">Подключиться</button>
+        </div>
+        <p class="error" id="joinError"></p>
+      </section>
+
+      <!-- Чат / обмен файлами -->
+      <section class="chat" id="exchange" hidden>
+        <div class="chat-head">
+          <span class="chat-peer">● Устройство подключено</span>
+          <button class="link-btn" id="disconnectBtn">разорвать соединение</button>
+        </div>
+
+        <div class="log" id="log"></div>
+
+        <div class="composer">
+          <div class="drop" id="dropZone">
+            <label class="file-label">
+              📎 <span>Прикрепить файл (до 5 МБ)</span>
+              <input type="file" id="fileInput" hidden>
+            </label>
+          </div>
+          <div class="send-row">
+            <textarea id="textInput" placeholder="Введите текст и нажмите Enter…" rows="1"></textarea>
+            <button class="primary-btn small" id="sendBtn">Отправить</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">Данные передаются напрямую через сервер-ретранслятор и нигде не сохраняются</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
