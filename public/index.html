@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>QuickShare — мгновенный обмен</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>QuickShare</span>
+      </div>
+      <div class="status" id="statusPill">не подключено</div>
+    </header>
+
+    <main class="card">
+      <nav class="tabs">
+        <button class="tab active" data-tab="host">Моё устройство</button>
+        <button class="tab" data-tab="join">Подключиться</button>
+      </nav>
+
+      <!-- ХОСТ -->
+      <section class="panel active" id="panel-host">
+        <p class="hint">Покажите этот код и пароль на втором устройстве</p>
+
+        <div class="code-box">
+          <div class="code" id="hostCode">— — —</div>
+          <button class="icon-btn" id="copyCode" title="Скопировать код">⧉</button>
+        </div>
+
+        <div class="pass-row" id="passRow">
+          <div class="pass-box">
+            <span class="label">Пароль</span>
+            <span class="pass" id="hostPass">——————</span>
+          </div>
+          <button class="icon-btn" id="copyPass" title="Скопировать пароль">⧉</button>
+        </div>
+
+        <div class="timer-row">
+          <div class="timer-track"><div class="timer-fill" id="timerFill"></div></div>
+          <span id="timerLabel">обновление через 15:00</span>
+        </div>
+
+        <label class="switch-row">
+          <input type="checkbox" id="requireAuth" checked>
+          <span>Запрашивать пароль при подключении</span>
+        </label>
+      </section>
+
+      <!-- ПОДКЛЮЧЕНИЕ -->
+      <section class="panel" id="panel-join">
+        <p class="hint">Введите код с другого устройства</p>
+        <input class="input" id="joinCode" inputmode="numeric" maxlength="7" placeholder="000 000">
+        <input class="input" id="joinPass" maxlength="6" placeholder="Пароль (если требуется)">
+        <button class="primary-btn" id="joinBtn">Подключиться</button>
+        <p class="error" id="joinError"></p>
+      </section>
+
+      <!-- ОБМЕН -->
+      <section class="exchange" id="exchange" hidden>
+        <div class="exchange-head">
+          <span>Устройство подключено</span>
+          <button class="link-btn" id="disconnectBtn">разорвать</button>
+        </div>
+
+        <div class="log" id="log"></div>
+
+        <div class="drop" id="dropZone">
+          Перетащите файл сюда (до 5 МБ) или
+          <label class="file-label">выберите<input type="file" id="fileInput" hidden></label>
+        </div>
+
+        <div class="send-row">
+          <textarea id="textInput" placeholder="Введите текст…" rows="1"></textarea>
+          <button class="primary-btn small" id="sendBtn">Отправить</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">Данные передаются напрямую через сервер-ретранслятор и нигде не сохраняются</footer>
+  </div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "quickshare",
+  "version": "1.0.0",
+  "description": "Мгновенный обмен текстом и файлами по одноразовому коду (relay-сервер на WebSocket)",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "ws": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
